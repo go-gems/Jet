@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ master, code-coverage ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, code-coverage ]
+    branches: [ master ]
 
 jobs:
   build:
