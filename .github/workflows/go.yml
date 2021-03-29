@@ -22,7 +22,22 @@ jobs:
 
     - name: Test
       run: go test -v -tags skip ./...
-
+    - name: Build and push Docker images
+      if: success()
+      uses: docker/build-push-action@v2.3.0
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: gogems/jet:latest
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
   coverage:
     runs-on: ubuntu-latest
     steps:
@@ -44,23 +59,3 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: coverage.lcov
-
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build and push Docker images
-      if: success()
-      uses: docker/build-push-action@v2.3.0
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: gogems/jet:latest
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
