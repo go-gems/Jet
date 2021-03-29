@@ -1,5 +1,6 @@
 # Jet
 
+[![Go](https://github.com/go-gems/Jet/actions/workflows/go.yml/badge.svg)](https://github.com/go-gems/Jet/actions/workflows/go.yml)
 
 To launch : 
 
