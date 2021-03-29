@@ -1,6 +1,7 @@
 # Jet
 
 [![Go](https://github.com/go-gems/Jet/actions/workflows/go.yml/badge.svg)](https://github.com/go-gems/Jet/actions/workflows/go.yml)
+[![Coverage Status](https://coveralls.io/repos/github/go-gems/Jet/badge.svg?branch=master)](https://coveralls.io/github/go-gems/Jet?branch=master)
 
 To launch : 
 
