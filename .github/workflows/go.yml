@@ -21,4 +21,26 @@ jobs:
       run: go build -v ./...
 
     - name: Test
-      run: go test -v ./...
+      run: go test -v -tags skip ./...
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Calc coverage
+      run: go test -v -covermode=count -coverprofile=coverage.out -tags skip ./...
+    - name: Convert coverage to lcov
+      uses: jandelgado/gcov2lcov-action@v1.0.8
+      with:
+        infile: coverage.out        # optional, default filename is `coverage.out`
+        outfile: coverage.lcov      # optional, default filename is `coverage.lcov`
+    - name: Coveralls
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.lcov
