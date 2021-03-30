@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ master,dockerize ]
+    branches: [ master ]
   pull_request:
-    branches: [ master,dockerize ]
+    branches: [ master ]
 
 jobs:
   build:
