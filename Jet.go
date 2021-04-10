@@ -4,13 +4,17 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"jet/API/Keygen"
 	"jet/StorageEngines"
 	"jet/http"
+	"log"
 )
 
 var storage StorageEngines.Storage = StorageEngines.NewInMemoryStorage()
 var keyGenerator Keygen.KeyGenerator = Keygen.NewUuidGenerator()
+var host = flag.String("host", "127.0.0.1", "Host to use")
+var port = flag.String("port", "8000", "Port to use")
 
 func init() {
 	storageDir := flag.String("storage.dir", "", "Specify directory to use Storage Directory")
@@ -31,5 +35,8 @@ func init() {
 }
 
 func main() {
-	http.Serve(storage, keyGenerator)
+
+	hostAndPort := fmt.Sprintf("%v:%v",*host,*port)
+
+	log.Fatal(http.Serve( hostAndPort , storage, keyGenerator))
 }

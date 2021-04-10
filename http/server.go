@@ -8,7 +8,7 @@ import (
 	"io"
 )
 
-func Serve(storage StorageEngines.Storage, keyGenerator Keygen.KeyGenerator) {
+func Serve(hostAndPort string, storage StorageEngines.Storage, keyGenerator Keygen.KeyGenerator) error {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	r.Use(textPlain)
@@ -19,6 +19,20 @@ func Serve(storage StorageEngines.Storage, keyGenerator Keygen.KeyGenerator) {
 			return
 		}
 		c.JSON(200, content)
+	})
+	r.PUT("/:key", func(c *gin.Context) {
+		key := c.Param("key")
+		content, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			c.AbortWithError(400, err)
+			return
+		}
+		_ , err = API.Set(storage, key,string(content))
+		if err != nil {
+			c.AbortWithError(500, err)
+			return
+		}
+		c.Writer.WriteString(key)
 	})
 	r.POST("/", func(c *gin.Context) {
 		content, err := io.ReadAll(c.Request.Body)
@@ -54,7 +68,7 @@ func Serve(storage StorageEngines.Storage, keyGenerator Keygen.KeyGenerator) {
 		c.Status(204)
 	})
 
-	r.Run("0.0.0.0:8000")
+	return r.Run(hostAndPort)
 }
 
 func textPlain(c *gin.Context) {

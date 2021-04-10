@@ -16,6 +16,6 @@ FROM alpine as RUN
 COPY --from=BUILD /go/src/github.com/go-gems/jet/jet /usr/local/bin/jet
 RUN chmod 777 /usr/local/bin/jet
 EXPOSE 8000
-ENTRYPOINT ["jet"]
+ENTRYPOINT ["jet", "-host","0.0.0.0","-port","8000"]
 
 
