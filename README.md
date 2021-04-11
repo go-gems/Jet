@@ -62,8 +62,6 @@ There are currently 2 types of storage engine, but feel free to add yours.
 
 By default, it will use the **not** persistent storage `inMemory`.
 
-**Please do not use this in production**
-
 ### File Storage
 
 You can use file storage which will basically store the file named like the key you have specified.
