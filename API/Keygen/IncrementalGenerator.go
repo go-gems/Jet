@@ -3,9 +3,12 @@ package Keygen
 import (
 	"jet/StorageEngines"
 	"strconv"
+	"sync"
 )
 
 type IncrementGenerator int
+
+var incrementMutex = sync.Mutex{}
 
 func NewIncrementGenerator() *IncrementGenerator {
 	var ig IncrementGenerator = 0
@@ -13,6 +16,8 @@ func NewIncrementGenerator() *IncrementGenerator {
 }
 
 func (i *IncrementGenerator) GetRandomKey(storage StorageEngines.Storage) string {
+	incrementMutex.Lock()
+	defer incrementMutex.Unlock()
 	str := ""
 	for {
 		*i++
@@ -22,5 +27,6 @@ func (i *IncrementGenerator) GetRandomKey(storage StorageEngines.Storage) string
 			break
 		}
 	}
+
 	return str
 }
